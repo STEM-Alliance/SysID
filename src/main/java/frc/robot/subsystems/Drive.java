@@ -7,8 +7,11 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.MutableMeasure.mutable;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
@@ -57,9 +60,9 @@ public class Drive extends SubsystemBase {
   // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
   private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
   // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
-  private final MutableMeasure<Distance> m_distance = mutable(Meters.of(0));
+  private final MutableMeasure<Angle> m_angle = mutable(Radians.of(0));
   // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
-  private final MutableMeasure<Velocity<Distance>> m_velocity = mutable(MetersPerSecond.of(0));
+  private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RadiansPerSecond.of(0));
 
   // Create a new SysId routine for characterizing the drive.
   private final SysIdRoutine m_sysIdRoutine =
@@ -80,10 +83,9 @@ public class Drive extends SubsystemBase {
                 log.motor("drive-left")
                     .voltage(
                         m_appliedVoltage.mut_replace(
-                            m_leftMotor.get() * RobotController.getBatteryVoltage(), Volts))
-                    .linearPosition(m_distance.mut_replace(m_leftEncoder.getPosition(), Meters))
-                    .linearVelocity(
-                        m_velocity.mut_replace(m_leftEncoder.getVelocity(), MetersPerSecond));
+                            m_leftMotor.get(), Volts))
+                    .angularPosition(m_angle.mut_replace(m_leftEncoder.getPosition(), Radians))
+                    .angularVelocity(m_velocity.mut_replace(m_leftEncoder.getVelocity(), RadiansPerSecond));
                 // Record a frame for the right motors.  Since these share an encoder, we consider
                 // the entire group to be one motor.
                 // log.motor("drive-right")
@@ -110,9 +112,10 @@ public class Drive extends SubsystemBase {
     //m_rightMotor.setInverted(true);
 
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
-    //m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    // m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    // m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
+    //m_leftEncoder.setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    //m_leftEncoder.setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
   }
 
   /**

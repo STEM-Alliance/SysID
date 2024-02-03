@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.OIConstants;
-
 import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -24,7 +22,7 @@ public class SysIdRoutineBot {
 
   // The driver's controller
   CommandXboxController m_driverController =
-      new CommandXboxController(OIConstants.kDriverControllerPort);
+      new CommandXboxController(0);
 
   /**
    * Use this method to define bindings between conditions and commands. These are useful for
